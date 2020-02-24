@@ -44,7 +44,8 @@ class ConfusionMatrixDisplay:
         self.display_labels = display_labels
 
     def plot(self, include_values=True, cmap='viridis',
-             xticks_rotation='horizontal', values_format=None, ax=None):
+             xticks_rotation='horizontal', values_format=None, ax=None,
+             colorbar=None):
         """Plot visualization.
 
         Parameters
@@ -66,6 +67,9 @@ class ConfusionMatrixDisplay:
         ax : matplotlib axes, default=None
             Axes object to plot on. If `None`, a new figure and axes is
             created.
+
+        colorbar : bool, default=None
+            No colorbar if `False`.
 
         Returns
         -------
@@ -111,6 +115,10 @@ class ConfusionMatrixDisplay:
         ax.set_ylim((n_classes - 0.5, -0.5))
         plt.setp(ax.get_xticklabels(), rotation=xticks_rotation)
 
+        if colorbar is False:
+            ax.images[0].colorbar.remove()
+            print(len(ax.images))
+
         self.figure_ = fig
         self.ax_ = ax
         return self
@@ -121,7 +129,8 @@ def plot_confusion_matrix(estimator, X, y_true, labels=None,
                           display_labels=None, include_values=True,
                           xticks_rotation='horizontal',
                           values_format=None,
-                          cmap='viridis', ax=None):
+                          cmap='viridis', ax=None,
+                          colorbar=True):
     """Plot Confusion Matrix.
 
     Read more in the :ref:`User Guide <confusion_matrix>`.
@@ -173,6 +182,9 @@ def plot_confusion_matrix(estimator, X, y_true, labels=None,
         Axes object to plot on. If `None`, a new figure and axes is
         created.
 
+    colorbar : bool, default=True
+            No colorbar if `False`.
+
     Returns
     -------
     display : :class:`~sklearn.metrics.ConfusionMatrixDisplay`
@@ -212,4 +224,4 @@ def plot_confusion_matrix(estimator, X, y_true, labels=None,
                                   display_labels=display_labels)
     return disp.plot(include_values=include_values,
                      cmap=cmap, ax=ax, xticks_rotation=xticks_rotation,
-                     values_format=values_format)
+                     values_format=values_format, colorbar=colorbar)
